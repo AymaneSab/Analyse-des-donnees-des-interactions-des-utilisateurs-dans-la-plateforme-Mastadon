@@ -1,41 +1,41 @@
 import requests
-import time  # Import the time module
+import time
 import json
 import pandas as pd
 import sys
 from hdfs import InsecureClient
 from bs4 import BeautifulSoup
-from mastodon import Mastodon 
+from mastodon import Mastodon
 import multiprocessing
 
-
 # Function to scrape a Mastodon timeline
-def scrape_mastodon_timeline(URL, params, since, hdfs_url, hdfs_filename):
-
+def scrape_mastodon_timeline(URL, params, duration_minutes=1):
     # Replace these with your actual credentials
     client_id = "Kwv1PkYN_72PtZumE471_ufbF__a2cJ1drXtQlTNr8I"
     client_secret = "gw9VXC6QruqP4mS_HsHFBg0yC9F2KiKeFZ6TngGPLCg"
     access_token = "iFpF83V4mdB76IMCD_9SuhSzZeQPOGRwrW1Pklt1cxU"
-
+    
     # Create a Mastodon instance
     mastodon = Mastodon(
-        client_id = client_id,
-        client_secret = client_secret,
-        access_token = access_token,
+        client_id=client_id,
+        client_secret=client_secret,
+        access_token=access_token,
         api_base_url = "https://mastodon.social/deck/getting-started"
     )
-
+    
+    start_time = time.time()
+    end_time = start_time + duration_minutes * 60  # Calculate the end time
+    
     toots_data = []  # Store toots data
-    is_end = False
     total_toots = 0
-
+    
     try:
-        while True:
+        while time.time() < end_time:  # Continue scraping until the end time is reached
             r = requests.get(URL, params=params)
             if r.status_code != 200:
                 if r.status_code == 429:
                     print("Rate limit exceeded. Pausing for a while and then retrying...")
-                    time.sleep(120)  # Pause for 60 seconds (adjust as needed)
+                    time.sleep(60)  # Pause for 60 seconds (adjust as needed)
                     continue  # Retry the request
                 else:
                     print(f"Failed to fetch data. Status code: {r.status_code}")
@@ -47,12 +47,11 @@ def scrape_mastodon_timeline(URL, params, since, hdfs_url, hdfs_filename):
             if current_toots == 0:
                 print("No toots found within the date range")
                 break
-
+            
             total_toots += current_toots
             print(f'Scraped {str(total_toots)} toots...', end='\r')
-
+            
             for toot in toots:
-
                 user = toot['account']
 
                 # Convert timestamps to strings
@@ -66,7 +65,6 @@ def scrape_mastodon_timeline(URL, params, since, hdfs_url, hdfs_filename):
                 content_text = BeautifulSoup(toot.get('content', ''), 'html.parser').get_text()
                 note_text = BeautifulSoup(user.get('note', ''), 'html.parser').get_text()
                 url_text = BeautifulSoup(user.get('url', ''), 'html.parser').get_text()
-
 
                 # Collect toots information
                 toot_data = {
@@ -101,7 +99,7 @@ def scrape_mastodon_timeline(URL, params, since, hdfs_url, hdfs_filename):
                         'followers_count': user['followers_count'],
                         'following_count': user['following_count'],
                         'statuses_count': user['statuses_count'],
-                        'last_status_at': user['last_status_at'], 
+                        'last_status_at': user['last_status_at'],
                         'emojis': user['emojis'],
                         'fields': user['fields'],
                     },
@@ -114,24 +112,16 @@ def scrape_mastodon_timeline(URL, params, since, hdfs_url, hdfs_filename):
                 }
                 toots_data.append(toot_data)
 
-            if is_end:
-                break
-
             max_id = toots[-1]['id']
             params['max_id'] = max_id
 
+        
+    
     except KeyboardInterrupt:
-        response = input("Do you want to continue scraping? (yes/no): ")
-        if response.lower() == 'no':
-            # Save scraped toots to HDFS before exiting
-            print("Saving scraped toots...")
-            save_to_json_hdfs(toots_data, hdfs_url, hdfs_filename)
-            print(f'Number of posts retrieved: {str(len(toots_data))}', end='\r')
-            sys.exit(0)
+        print("Exception in scrape_mastodon_timeline function")
 
-    return toots_data
-    
-    
+    return toot_data
+
 # Function to save data to HDFS
 def save_to_json_hdfs(data, hdfs_url, hdfs_filename):
     try:
@@ -140,7 +130,7 @@ def save_to_json_hdfs(data, hdfs_url, hdfs_filename):
 
         # Create a new file with the current date in HDFS
         current_date = pd.Timestamp.now().strftime('%Y-%m-%d')
-        hdfs_path = f'/Mostodon/Raw/{hdfs_filename}_{current_date}.json'
+        hdfs_path = f'/Mastodon/Raw/{hdfs_filename}_{current_date}.json'
 
         # Check if the file already exists
         if hdfs_client.status(hdfs_path, strict=False):
@@ -148,12 +138,7 @@ def save_to_json_hdfs(data, hdfs_url, hdfs_filename):
             hdfs_client.delete(hdfs_path)
 
         # Process and format the data
-        formatted_data = []
-        
-        for obj in data:
-            formatted_obj = json.dumps(obj, separators=(',', ':'))
-            formatted_data.append(formatted_obj)
-            
+        formatted_data = [json.dumps(obj, separators=(',', ':')) for obj in data]
         formatted_data_str = '\n'.join(formatted_data)
 
         # Save the formatted data to the HDFS file
@@ -161,38 +146,29 @@ def save_to_json_hdfs(data, hdfs_url, hdfs_filename):
             writer.write(formatted_data_str)
 
         print(f"Data saved to HDFS: {hdfs_path}")
-        return hdfs_path
 
     except Exception as e:
         print(f"Error saving data to HDFS: {str(e)}")
-    
-def scrapper() :
 
+def scrapper():
     URL = 'https://mastodon.social/api/v1/timelines/public'
-    params = {
-        'limit': 40,
-    }
-    since = pd.Timestamp(year=2021, month=5, day=1, tz='utc')
+    params = {'limit': 40}
     
-    hdfs_url = 'http://10.211.55.5:9870'
+    hdfs_url = 'http://localhost:9870'
     hdfs_filename = 'mastodon_data'
 
-    toots_data = scrape_mastodon_timeline(URL, params, since, hdfs_url, hdfs_filename)
-    
-def getData() :
-    # Start your script as a separate process
-    process = multiprocessing.Process(target=scrapper)
-    process.start()
+    try:
+        print("Scraping Mastodon data")
+  
+        toots_data =scrape_mastodon_timeline(URL, params, duration_minutes=1)
 
-    # Wait for 10 minutes
-    time.sleep(60)  # 10 minutes = 600 seconds
+        print("Saving data to HDFS")
+        hdfs_path = save_to_json_hdfs(toots_data, hdfs_url, hdfs_filename)
 
-    # Terminate the process after 10 minutes
-    process.terminate()
-    process.join()
-    
-    return hdfs_path
-    
+        print(f"Data Saved To {hdfs_path}")
+
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+
 if __name__ == '__main__':
-    getData()
-     
+    scrapper()

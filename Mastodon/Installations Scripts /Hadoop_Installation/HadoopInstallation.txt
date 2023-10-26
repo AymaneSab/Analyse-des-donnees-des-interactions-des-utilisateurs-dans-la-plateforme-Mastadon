@@ -1,0 +1,220 @@
+######################################################################################################################################################################################################
+											Hadoop 3.3.6 Installation 
+######################################################################################################################################################################################################
+
+
+
+######################################################################################################################################################################################################
+                                  							Environment Preparation		      		       		  
+######################################################################################################################################################################################################
+
+---------- > Java Installation : 
+
+# sudo apt install default-jre default-jdk -y            							# install java
+# java -version                                 								# Get the java version 
+# readlink (wich javac)                          								# get the java home path 
+
+
+---------- > Hadoop User Creation : 
+
+# sudo adduser hadoop                            								# icreate a user 'hadoop'
+# sudo usermod -aG sudo hadoop                   								# add the hadoop user to sudowers
+# sudo su - hadoop                               								# change user to hadoop 
+
+
+---------- > SSH Configuration : 
+
+
+# sudo apt install openssh-server openssh-client -y             						# install open ssh 
+# ssh-keygen -t rsa					        						# generate ssh keys 
+# cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys								# past the generated keys to authorized_keys
+# sudo chmod 640 ~/.ssh/authorized_keys			        						# change file permissions
+# ssh localhost						        						# verify if it works 
+
+
+
+
+
+
+######################################################################################################################################################################################################
+                                  							Hadoop Installation		      		       		          											     
+######################################################################################################################################################################################################
+
+---------- > Java Installation : 
+
+# wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz      				# get the binary version
+# tar -xvzf hadoop-3.3.6.tar.gz                                                     				# extract the tar 
+# sudo mv hadoop-3.3.6 /usr/local/hadoop                                            				# move the extracted files to hadoop user 
+# sudo mkdir /usr/local/hadoop/logs						    				# create logs directory to store logs ! 
+# sudo chown -R hadoop:hadoop /usr/local/hadoop					    				# chnage the owner of files to hadoop (Hiearchiycal) 
+
+
+
+
+
+
+
+######################################################################################################################################################################################################
+                                  							Hadoop Configuration		      		       		          
+######################################################################################################################################################################################################
+
+
+
+######################################################################
+          bashrc  		  				     #
+######################################################################
+
+# sudo gedit ~/.bashrc            										# install java                                 								
+
+# export HADOOP_HOME=/usr/local/hadoop
+# export HADOOP_INSTALL=$HADOOP_HOME
+# export HADOOP_MAPRED_HOME=$HADOOP_HOME
+# export HADOOP_COMMON_HOME=$HADOOP_HOME
+# export HADOOP_HDFS_HOME=$HADOOP_HOME
+# export YARN_HOME=$HADOOP_HOME
+# export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+# export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+# export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
+
+# source ~/.bashrc
+
+######################################################################
+   java environment variables     				     #
+######################################################################
+
+# sudo nano $HADOOP_HOME/etc/hadoop/hadoop-env.sh            							# install java
+
+# export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+# export HADOOP_CLASSPATH+=" $HADOOP_HOME/lib/*.jar"
+
+######################################################################
+   hadoop-env.sh.               				     #
+######################################################################
+
+# cd /usr/local/hadoop/lib            										# install java
+
+# wget https://jcenter.bintray.com/javax/activation/javax.activation
+-api/1.2.0/javax.activation-api-1.2.0.jar
+# hadoop version
+# cd /usr/local/hadoop/lib
+
+######################################################################
+   core-site.xml                  				     #
+######################################################################
+
+# sudo nano $HADOOP_HOME/etc/hadoop/core-site.xml            							# install java
+
+<property>
+
+      <name>fs.default.name</name>
+
+      <value>hdfs://0.0.0.0:9000</value>
+
+      <description>The default file system URI</description>
+
+</property>
+
+
+# sudo mkdir -p /home/hadoop/hdfs/{namenode,datanode}
+# sudo chown -R hadoop:hadoop /home/hadoop/hdfs
+
+######################################################################
+   hdfs-site.xml                  				     #
+######################################################################
+
+
+# sudo nano $HADOOP_HOME/etc/hadoop/hdfs-site.xml            							# install java
+
+<property>
+      <name>dfs.replication</name>
+      <value>1</value>
+</property>
+
+<property>
+      <name>dfs.name.dir</name>
+      <value>file:///home/hadoop/hdfs/namenode</value>
+</property>
+
+<property>
+      <name>dfs.data.dir</name>
+      <value>file:///home/hadoop/hdfs/datanode</value>
+</property>
+
+
+
+######################################################################
+   mapred-site.xml                  				     #
+######################################################################
+
+
+# sudo nano $HADOOP_HOME/etc/hadoop/mapred-site.xml            							# install java
+
+
+
+
+######################################################################
+   yarn-site.xml                  				     #
+######################################################################
+
+
+# sudo nano $HADOOP_HOME/etc/hadoop/yarn-site.xml            							# install java
+
+
+<property>
+      <name>yarn.nodemanager.aux-services</name>
+      <value>mapreduce_shuffle</value>
+</property>
+
+
+######################################################################################################################################################################################################
+                                  							Hadoop Configuration		      		       		          
+######################################################################################################################################################################################################
+
+
+---------- > Start the Hadoop cluster  :             								# install java
+
+
+# hdfs namenode -format
+# start-dfs.sh
+# start-yarn.sh
+# jps
+# http://server-IP:9870
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -74,4 +74,3 @@ with DAG('Mastodon_Analysis', default_args=default_args, schedule_interval=None,
 if __name__ == "__main__":
     dag.cli()
 
-

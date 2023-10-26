@@ -1,0 +1,93 @@
+
+######################################################################################################################################################################################################
+											       Hbase
+######################################################################################################################################################################################################
+
+
+
+######################################################################################################################################################################################################
+                                  							Hbase Installation		      		       		  
+######################################################################################################################################################################################################
+
+
+# wget http://www.interior-dsgn.com/apache/hbase/stable/hbase-2.5.5-bin.tar.gz                              # Install The inary Version 
+# tar -zxvf hbase-2.5.5-bin.tar.gz									    # Extract the downloaded file 
+# sudo mv hbase-2.5.5 /usr/local/Hbase									    # move the files to local directory in hadoop user 
+
+
+
+######################################################################################################################################################################################################
+                                  							Hbase Configuration		      		       		  
+######################################################################################################################################################################################################
+
+
+# cd /usr/local/Hbase/conf
+
+
+######################################################################
+          hbase-env.sh  		  			     # used to configure environment variables
+######################################################################
+
+
+# gedit hbase-env.sh
+
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export HADOOP_CLASSPATH+=" $HADOOP_HOME/lib/*.jar"                   # Optionnal 
+	 
+
+######################################################################
+          hbase-site.xml  		  			     # Contains settings and parameters that are specific to HBase cluster and how it operates. 
+######################################################################
+
+
+# gedit hbase-site.xml
+
+<configuration>
+	<property>
+	  	<name>hbase.rootdir</name>
+	  	<!-- <value>file:/home/hadoop/Hbase/HFiles</value> -->
+	  	<value>hdfs://0.0.0.0:9000/hbase</value>              # Shoud be the same of hadoop cluster IP
+	</property>
+	
+	<property>
+  		<name>hbase.wal.provider</name>
+  		<value>filesystem</value>
+	</property>
+	<property>
+  		<name>hbase.regionserver.thrift.http</name>
+  		<value>false</value>
+	</property>
+</configuration>
+
+
+######################################################################
+          profile  		  			             #  used to set environment variables and define user-specific settings and behaviors for a user's shell session. 
+######################################################################
+
+	
+# sudo gedit ~/.profile
+
+export HBASE_HOME=/usr/local/Hbase
+export PATH=$PATH:$HBASE_HOME/bin
+
+# source ~/.profile
+
+######################################################################################################################################################################################################
+											       Hbase
+######################################################################################################################################################################################################
+ 
+# /usr/local/Hbase/bin/start-hbase.sh 
+
+# http://10.211.55.5:16010/
+
+# /usr/local/Hbase/bin/hbase shell 
+
+# /usr/local/Hbase/bin/stop-hbase.sh
+
+# /usr/local/Hbase/bin/hbase-daemon.sh start thrift
+
+# ps aux | grep HMaster
+
+
+
+

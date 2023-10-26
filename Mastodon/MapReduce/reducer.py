@@ -30,6 +30,5 @@ for line in sys.stdin:
 # Serialize the result_dict to JSON format
 result_json = json.dumps(result_dict, indent=2)
 
-# Print the JSON data
-print(result_json)
 
+print(result_json)

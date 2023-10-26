@@ -1,0 +1,17 @@
+
+----------> Hbasee Table Creation : 
+
+  ----> Language table : create 'Language', 'Language'
+
+  ----> User table : create 'User', 'UserInfo'
+
+  ----> URLShare table : create 'URLShare', 'URLInfo'
+
+  ----> Tags table : create 'Tags', 'TagsInfo'
+
+  ----> Mentions table : create 'Mentions', 'MentionsInfo'
+
+  ----> create 'MastodonGrowth', 'DateMetrics'
+
+  ----> create 'Year', 'YearMetrics'
+

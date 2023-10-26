@@ -5,20 +5,26 @@ import json
 import re
 
 for line in sys.stdin:
+
     try:
+    
         # Charger les données JSON
         data = json.loads(line)
         
+        # Toots related information : 
         toot_data = data
-        toot_id = data["id"]
+        toot_id = toot_data["id"]
         
-        # Données complètes du toot
+        # User related information : 
+        account = data.get('account')
+        user_id = account.get('id')
+        
 
         if toot_id is not None:
             
-            sensitive = toot_data.get('sensitive', '')
-            visibility = toot_data.get('visibility', '')
-            language = toot_data.get('language', '')
+            sensitive = toot_data.get('sensitive')
+            visibility = toot_data.get('visibility')
+            language = toot_data.get('language')
 
 	    
             print(f"TootsSensibility_{sensitive}\t1")
@@ -28,7 +34,7 @@ for line in sys.stdin:
                 print(f"Tootslanguage_{language}\t1")
             
             if toot_data.get('media_attachments') != []: 
-                print(f"TootsMediaAttachments_\t1")
+                print(f"HasMediaAttachments_{toot_id}\t1")
             
             # regular expression pattern for matching URLs
             url_pattern = r'https?://\S+'
@@ -52,10 +58,7 @@ for line in sys.stdin:
                 if tag:
                     print(f"Tag_{tag}\t1")
                 
-                
-        account = data.get('account')
-        user_id = account.get('id')
-        
+        # Extract user related information : 
         if user_id is not None:
             
             followers_count = account.get('followers_count', 0) 
@@ -64,17 +67,28 @@ for line in sys.stdin:
 
             
             if followers_count != 0 :
+            
             	print(f"UserFollowerCount_{user_id}\t{followers_count}")
+            	
             	user_engagment = int((reblogs_count + favourites_count ) / followers_count)
             	print(f"UserEngagementRate_{user_id}\t{user_engagment}")
-
-            	
 	
-            account_creation_date = account.get('created_at' , '')[:7]
+            account_creation_date = account.get('created_at' , '')[:10]
             
             if account_creation_date:
+            
+                Year  =  account_creation_date[:4]
+                Month =  account_creation_date[5:7]
+                Day   =  account_creation_date[8:10]
+                
+                # get the full account creation date 
+                
                 print(f"UserDate_{account_creation_date}\t1")
             
-    except Exception as e:
-        print("Error:", str(e))
+                # Get the year 
+                print(f"DateYear_{Year}\t1")
 
+            
+    except Exception as e:
+        print("Error at mapper :", str(e))
+        
