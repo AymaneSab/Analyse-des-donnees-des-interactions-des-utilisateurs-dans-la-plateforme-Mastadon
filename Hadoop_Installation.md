@@ -59,18 +59,19 @@ ssh localhost
 
 ## Hadoop Installation
 ### Download and install Hadoop:
-Install binary version
 ```shell
+#Install binary version
+
 wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
 tar -xvzf hadoop-3.3.6.tar.gz
-```
-Change hadoop directory
-```shell
+
+#Change hadoop directory
+
 sudo mv hadoop-3.3.6 /usr/local/hadoop
 sudo mkdir /usr/local/hadoop/logs
-```
-Change hadoop owner
-```shell
+
+#Change hadoop owner
+
 sudo chown -R hadoop:hadoop /usr/local/hadoop
 ```
 ## Hadoop Configuration
