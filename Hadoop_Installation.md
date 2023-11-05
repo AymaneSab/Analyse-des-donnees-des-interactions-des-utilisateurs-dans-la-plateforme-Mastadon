@@ -67,8 +67,8 @@ sudo mv hadoop-3.3.6 /usr/local/hadoop
 sudo mkdir /usr/local/hadoop/logs
 sudo chown -R hadoop:hadoop /usr/local/hadoop
 ```
-### Hadoop Configuration
-## Environment Variables
+## Hadoop Configuration
+### Environment Variables
 Edit your .bashrc file to set Hadoop environment variables:
 
 ```shell
@@ -89,5 +89,32 @@ export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
 source ~/.bashrc
 ```
 
+### Java Environment Variables
+Edit hadoop-env.sh to set Java environment variables:
+
+```shell
+sudo nano $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+
+# Add the following lines:
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export HADOOP_CLASSPATH+=" $HADOOP_HOME/lib/*.jar"
+
+# Save the file.
+```
+
+### Hadoop Configuration Files
+#### core-site.xml
+Edit core-site.xml to configure the default file system URI:
+
+```shell
+sudo nano $HADOOP_HOME/etc/hadoop/core-site.xml
+```
+```shell
+<property>
+    <name>fs.default.name</name>
+    <value>hdfs://0.0.0.0:9000</value>
+    <description>The default file system URI</description>
+</property>
+```
 
 
