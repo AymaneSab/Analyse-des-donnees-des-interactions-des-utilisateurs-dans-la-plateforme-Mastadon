@@ -58,7 +58,7 @@ ssh localhost
 
 ## Hadoop Installation
 ### Hadoop Installation
-#Download and install Hadoop:
+Download and install Hadoop:
 
 ```shell
 wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
@@ -66,6 +66,28 @@ tar -xvzf hadoop-3.3.6.tar.gz
 sudo mv hadoop-3.3.6 /usr/local/hadoop
 sudo mkdir /usr/local/hadoop/logs
 sudo chown -R hadoop:hadoop /usr/local/hadoop
+```
+### Hadoop Configuration
+## Environment Variables
+Edit your .bashrc file to set Hadoop environment variables:
+
+```shell
+sudo gedit ~/.bashrc
+
+# Add the following lines:
+export HADOOP_HOME=/usr/local/hadoop
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
+
+# Save the file and run:
+source ~/.bashrc
+```
 
 
 
