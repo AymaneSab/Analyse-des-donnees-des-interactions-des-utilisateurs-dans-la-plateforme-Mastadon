@@ -117,4 +117,61 @@ sudo nano $HADOOP_HOME/etc/hadoop/core-site.xml
 </property>
 ```
 
+### Create the necessary HDFS directories and set their permissions:
+
+```shell
+sudo mkdir -p /home/hadoop/hdfs/{namenode,datanode}
+sudo chown -R hadoop:hadoop /home/hadoop/hdfs
+```
+
+#### hdfs-site.xml
+Edit hdfs-site.xml to configure HDFS settings:
+
+```shell
+sudo nano $HADOOP_HOME/etc/hadoop/hdfs-site.xml
+
+<property>
+    <name>dfs.replication</name>
+    <value>1</value>
+</property>
+
+<property>
+    <name>dfs.name.dir</name>
+    <value>file:///home/hadoop/hdfs/namenode</value>
+</property>
+
+<property>
+    <name>dfs.data.dir</name>
+    <value>file:///home/hadoop/hdfs/datanode</value>
+</property>
+```
+
+#### mapred-site.xml
+Edit mapred-site.xml (if needed) to configure MapReduce settings.
+
+#### yarn-site.xml
+Edit yarn-site.xml to configure YARN settings:
+
+```shell
+sudo nano $HADOOP_HOME/etc/hadoop/yarn-site.xml
+
+<property>
+    <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+</property>
+```
+
+## Starting the Hadoop Cluster
+### Format the HDFS namenode and start the Hadoop cluster:
+
+```shell
+hdfs namenode -format
+start-dfs.sh
+start-yarn.sh
+jps
+```
+
+
+
+
 
