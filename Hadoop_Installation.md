@@ -28,8 +28,9 @@ Install Java and configure it:
 sudo apt install default-jre default-jdk -y
 java -version
 readlink $(which javac)
+```shell
 
-## Hadoop User Creation
+###Hadoop User Creation
 
 To create a dedicated Hadoop user and add it to the sudoers group, follow these steps:
 
