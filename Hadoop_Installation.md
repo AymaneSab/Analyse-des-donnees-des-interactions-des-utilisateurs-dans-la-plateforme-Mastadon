@@ -46,7 +46,9 @@ sudo su - hadoop
 ```
 
 ### SSH Configuration
-Install and configure SSH for passwordless login:
+```shell
+
+# Install and configure SSH for passwordless login:
 sudo apt install openssh-server openssh-client -y
 ssh-keygen -t rsa
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
