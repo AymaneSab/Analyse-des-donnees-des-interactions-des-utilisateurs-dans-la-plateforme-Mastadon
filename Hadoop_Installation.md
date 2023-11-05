@@ -1,0 +1,30 @@
+# Hadoop 3.3.6 Installation Guide
+
+This guide provides step-by-step instructions for installing Hadoop 3.3.6 on a Linux-based system. Follow these steps to set up your Hadoop environment.
+
+## Table of Contents
+- [Environment Preparation](#environment-preparation)
+  - [Java Installation](#java-installation)
+  - [Hadoop User Creation](#hadoop-user-creation)
+  - [SSH Configuration](#ssh-configuration)
+- [Hadoop Installation](#hadoop-installation)
+- [Hadoop Configuration](#hadoop-configuration)
+  - [Environment Variables](#environment-variables)
+  - [Java Environment Variables](#java-environment-variables)
+  - [Hadoop Configuration Files](#hadoop-configuration-files)
+    - [core-site.xml](#core-site-xml)
+    - [hdfs-site.xml](#hdfs-site-xml)
+    - [mapred-site.xml](#mapred-site-xml)
+    - [yarn-site.xml](#yarn-site-xml)
+- [Starting the Hadoop Cluster](#starting-the-hadoop-cluster)
+
+## Environment Preparation
+
+### Java Installation
+
+Install Java and configure it:
+
+```shell
+sudo apt install default-jre default-jdk -y
+java -version
+readlink $(which javac)
