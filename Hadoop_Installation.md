@@ -8,6 +8,7 @@ This guide provides step-by-step instructions for installing Hadoop 3.3.6 on a L
   - [Hadoop User Creation](#hadoop-user-creation)
   - [SSH Configuration](#ssh-configuration)
 - [Hadoop Installation](#hadoop-installation)
+  - [Hadoop Installation](#download_and_install_Hadoop)
 - [Hadoop Configuration](#hadoop-configuration)
   - [Environment Variables](#environment-variables)
   - [Java Environment Variables](#java-environment-variables)
@@ -57,14 +58,19 @@ ssh localhost
 ```
 
 ## Hadoop Installation
-### Hadoop Installation
-Download and install Hadoop:
-
+### Download and install Hadoop:
+Install binary version
 ```shell
 wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
 tar -xvzf hadoop-3.3.6.tar.gz
+```
+Change hadoop directory
+```shell
 sudo mv hadoop-3.3.6 /usr/local/hadoop
 sudo mkdir /usr/local/hadoop/logs
+```
+Change hadoop owner
+```shell
 sudo chown -R hadoop:hadoop /usr/local/hadoop
 ```
 ## Hadoop Configuration
