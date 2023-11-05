@@ -43,4 +43,14 @@ sudo usermod -aG sudo hadoop
 
 # Switch to the Hadoop user:
 sudo su - hadoop
+```
+
+### SSH Configuration
+Install and configure SSH for passwordless login:
+sudo apt install openssh-server openssh-client -y
+ssh-keygen -t rsa
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+sudo chmod 640 ~/.ssh/authorized_keys
+ssh localhost
+
 
