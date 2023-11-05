@@ -54,5 +54,18 @@ ssh-keygen -t rsa
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 sudo chmod 640 ~/.ssh/authorized_keys
 ssh localhost
+```
+
+## Hadoop Installation
+### Hadoop Installation
+# Download and install Hadoop:
+
+```shell
+wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
+tar -xvzf hadoop-3.3.6.tar.gz
+sudo mv hadoop-3.3.6 /usr/local/hadoop
+sudo mkdir /usr/local/hadoop/logs
+sudo chown -R hadoop:hadoop /usr/local/hadoop
+
 
 
