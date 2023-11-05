@@ -58,7 +58,7 @@ ssh localhost
 
 ## Hadoop Installation
 ### Hadoop Installation
-# Download and install Hadoop:
+#Download and install Hadoop:
 
 ```shell
 wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz
