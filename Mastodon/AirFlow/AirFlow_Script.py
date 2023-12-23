@@ -8,12 +8,6 @@ import sys
 sys.path.insert(0, '/home/hadoop/Mastodon/Scrapping')
 from Scrapper import getData
 
-#default_args = {
-    #'owner': 'admin',
-    #'start_date': datetime(2023, 10, 24),
-    #'retry_dely': timedelta(minutes = 5)
-#}
-
 default_args = {
     'owner': 'admin',
     'start_date': datetime(2023, 10, 23),
