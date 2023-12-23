@@ -4,6 +4,8 @@ This repository contains the code and documentation for the Data Developer proje
 
 ## Project Overview
 
+![Alt text](https://www.simplilearn.com/ice9/free_resources_article_thumb/What_is_Hadoop.jpg)
+
 ### Data Collection
 
 - Utilize the platform's API with its access tokens.
