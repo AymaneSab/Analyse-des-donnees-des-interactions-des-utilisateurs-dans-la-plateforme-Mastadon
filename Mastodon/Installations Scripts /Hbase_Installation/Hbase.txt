@@ -10,9 +10,12 @@
 ######################################################################################################################################################################################################
 
 
-# wget http://www.interior-dsgn.com/apache/hbase/stable/hbase-2.5.5-bin.tar.gz                              # Install The inary Version 
-# tar -zxvf hbase-2.5.5-bin.tar.gz									    # Extract the downloaded file 
-# sudo mv hbase-2.5.5 /usr/local/Hbase									    # move the files to local directory in hadoop user 
+# cd /usr/local
+# sudo wget https://dlcdn.apache.org/hbase/2.5.5/hbase-2.5.5-bin.tar.gz                      # Install The inary Version 
+# sudo tar -zxvf hbase-2.5.5-bin.tar.gz			                                     # Extract the downloaded file 
+# sudo mv hbase-2.5.5 /usr/local/Hbase	                                                     # move the files to local directory in hadoop user 
+# sudo chown -R hadoop:hadoop /usr/local/Hbase
+								                         
 
 
 
@@ -46,7 +49,7 @@ export HADOOP_CLASSPATH+=" $HADOOP_HOME/lib/*.jar"                   # Optionnal
 	<property>
 	  	<name>hbase.rootdir</name>
 	  	<!-- <value>file:/home/hadoop/Hbase/HFiles</value> -->
-	  	<value>hdfs://0.0.0.0:9000/hbase</value>              # Shoud be the same of hadoop cluster IP
+	  	<value>hdfs://0.0.0.0:9000/hbase</value>             
 	</property>
 	
 	<property>
@@ -87,6 +90,69 @@ export PATH=$PATH:$HBASE_HOME/bin
 # /usr/local/Hbase/bin/hbase-daemon.sh start thrift
 
 # ps aux | grep HMaster
+
+
+
+
+######################################################################
+          Systemectl   		  			             #  
+######################################################################
+
+
+
+sudo gedit /etc/systemd/system/hbase.service
+
+[Unit]
+Description=HBase NoSQL Database
+
+[Service]
+User=<your-hbase-username>
+Group=<your-hbase-group>
+Environment="HBASE_MANAGES_ZK=true"
+ExecStart=/usr/local/Hbase/bin/start-hbase.sh
+ExecStop=/usr/local/Hbase/bin/stop-hbase.sh
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable hbase.service
+sudo systemctl start hbase.service
+sudo systemctl status hbase.service
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

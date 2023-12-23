@@ -25,10 +25,12 @@
 # mkdir airflow-environment
 # cd /home/hadoop/AirFlow/airflow-environment
 
-# conda create --name airflow-environment python = 3.9
+# conda create --name airflow-environment python=3.9
 # conda activate airflow-environment
 
 # export AIRFLOW_HOME = pwd ( Absolut path of the working directory )
+# export AIRFLOW_HOME="/home/hadoop/AirFlow/airflow-environment"
+
 
 
 
@@ -46,21 +48,26 @@
 ######################################################################
 
 # sudo apt-get update && sudo apt-get install -y
-# sudo apt-get python-setuptools
-# sudo apt-get python3-pip
-# sudo apt-get python-dev
-# sudo apt-get libffi-dev
-# sudo apt-get zip
-# sudo apt-get wget
-# sudo apt-get install gcc python3-dev
+# sudo apt-get install python-setuptools
+# sudo apt-get install python3-pip
+# sudo apt-get install python3-dev
+# sudo apt-get install libffi-dev
+# sudo apt-get install zip
+# sudo apt-get install wget
+# sudo apt-get install install gcc python3-dev
 # sudo apt-get install pkg-config libxml2-dev libxmlsec1-dev libxmlsec1-openssl
+# sudo apt-get install libcairo2-dev
+# sudo apt-get install libdbus-1-dev
+# sudo apt-get install libgirepository1.0-dev
 
 # pip install apache-airflow
 # pip install gcp
 # pip install statsd
-# pip install sentry==2.1.2
+# pip install sentry
 # pip install cryptography
 # pip install pyspark
+# pip install connexion
+
 
 
 ######################################################################
@@ -71,7 +78,7 @@
 # cd /home/hadoop/AirFlow
 # conda activate airflow-environment
 
-# export AIRFLOW_HOME = /home/hadoop/AirFlow/airflow-environment
+# export AIRFLOW_HOME=/home/hadoop/AirFlow/airflow-environment
 # airflow db init
 # airflow users create --role Admin --username admin --email admin --firstname admin --lastname admin --password AllahSave.1234/
 

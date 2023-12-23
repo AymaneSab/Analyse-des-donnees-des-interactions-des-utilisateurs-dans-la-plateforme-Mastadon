@@ -40,10 +40,10 @@
                                   							Hadoop Installation		      		       		          											     
 ######################################################################################################################################################################################################
 
----------- > Java Installation : 
+---------- > Hadoop Installation : 
 
 # wget https://dlcdn.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz      				# get the binary version
-# tar -xvzf hadoop-3.3.6.tar.gz                                                     				# extract the tar 
+# sudo tar -xvzf hadoop-3.3.6.tar.gz                                                     				# extract the tar 
 # sudo mv hadoop-3.3.6 /usr/local/hadoop                                            				# move the extracted files to hadoop user 
 # sudo mkdir /usr/local/hadoop/logs						    				# create logs directory to store logs ! 
 # sudo chown -R hadoop:hadoop /usr/local/hadoop					    				# chnage the owner of files to hadoop (Hiearchiycal) 
@@ -64,17 +64,17 @@
           bashrc  		  				     #
 ######################################################################
 
-# sudo gedit ~/.bashrc            										# install java                                 								
+# sudo nano ~/.bashrc            										# install java                                 								
 
-# export HADOOP_HOME=/usr/local/hadoop
-# export HADOOP_INSTALL=$HADOOP_HOME
-# export HADOOP_MAPRED_HOME=$HADOOP_HOME
-# export HADOOP_COMMON_HOME=$HADOOP_HOME
-# export HADOOP_HDFS_HOME=$HADOOP_HOME
-# export YARN_HOME=$HADOOP_HOME
-# export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
-# export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
-# export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
+export HADOOP_HOME=/usr/local/hadoop
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
 
 # source ~/.bashrc
 
@@ -84,8 +84,8 @@
 
 # sudo nano $HADOOP_HOME/etc/hadoop/hadoop-env.sh            							# install java
 
-# export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-# export HADOOP_CLASSPATH+=" $HADOOP_HOME/lib/*.jar"
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export HADOOP_CLASSPATH+=" $HADOOP_HOME/lib/*.jar"
 
 ######################################################################
    hadoop-env.sh.               				     #
@@ -93,8 +93,8 @@
 
 # cd /usr/local/hadoop/lib            										# install java
 
-# wget https://jcenter.bintray.com/javax/activation/javax.activation
--api/1.2.0/javax.activation-api-1.2.0.jar
+# wget "https://jcenter.bintray.com/javax/activation/javax.activation-api/1.2.0/javax.activation-api-1.2.0.jar"
+
 # hadoop version
 # cd /usr/local/hadoop/lib
 
@@ -148,6 +148,25 @@
 
 
 # sudo nano $HADOOP_HOME/etc/hadoop/mapred-site.xml            							# install java
+
+<configuration>
+ <property>
+ <name>mapreduce.framework.name</name>
+ <value>yarn</value>
+ </property>
+ <property>
+ <name>yarn.app.mapreduce.am.env</name>
+ <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+ </property>
+ <property>
+ <name>mapreduce.map.env</name>
+ <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+ </property>
+ <property>
+ <name>mapreduce.reduce.env</name>
+ <value>HADOOP_MAPRED_HOME=${HADOOP_HOME}</value>
+ </property>
+</configuration>
 
 
 
