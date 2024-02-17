@@ -97,4 +97,3 @@ This repository contains the code and documentation for the Data Developer proje
 - Document all personal data ingested from Mastodon and how it is processed and stored.
 - Ensure all data processing activities comply with GDPR regulations.
 
-Feel free to use this README file as a reference for your project's documentation. If you have any questions or need further assistance, please don't hesitate to ask.
